@@ -45,20 +45,7 @@ INSTALLED_APPS = [
     # django
     'django.contrib.sites',
 
-    #thirds
-    'django_q',
 ]
-
-
-Q_CLUSTER = {
-    'name': 'mycluster',
-    'workers': 4,
-    'timeout': 300,
-    'retry': 420,
-    'queue_limit': 50,
-    'bulk': 10,
-    'orm': 'default',
-}
 
 
 
@@ -143,7 +130,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = 'static'
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 STATICFILES_DIRS = [
