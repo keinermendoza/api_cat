@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -39,8 +40,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # own
-    'cats'
+    'cats',
+
+    # django
+    'django.contrib.sites',
+
+    #thirds
+    'django_q',
 ]
+
+
+Q_CLUSTER = {
+    'name': 'mycluster',
+    'workers': 4,
+    'timeout': 300,
+    'retry': 420,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default',
+}
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

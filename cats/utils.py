@@ -1,4 +1,5 @@
 from random import randint
+
 from django.conf import settings
 from PIL import Image, ImageFont, ImageDraw
 
@@ -36,7 +37,7 @@ def put_text_on_image(image_selected, text=None, selected_font=None):
     draw.text((x, y), text, anchor="mm" ,fill=(255,255,255), font=font)
 
 
-    location = img.save(f'{settings.MEDIA_ROOT}/temporal/{name}{uuid}.webp')
+    location = f'{settings.MEDIA_ROOT}/temporal/{name}{uuid}.webp'
+    img.save(location)
     return location
     
- 
