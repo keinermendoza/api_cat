@@ -15,13 +15,15 @@ def home(request):
 @require_GET
 def api_random_cat(request):    
     cat = Cat.get_random_cat()
-    image = cat.url
+    _, image = str(cat.url).split('/')
 
     text = request.GET.get('text')
     if text:
-        image = put_text_on_image(cat.url, text=text)
+        font = request.GET.get('font')
+
+        image = put_text_on_image(cat.url, text=text, font=font)
 
 
-    image_full_url = f'http://{get_current_site(request).domain}/{image}'
+    image_full_url = f'http://{get_current_site(request).domain}/media/temporal/{image}'
 
     return JsonResponse({'url': image_full_url})

@@ -3,7 +3,7 @@ from os import path, listdir, remove
 from django.conf import settings
 from PIL import Image, ImageFont, ImageDraw
 
-DEFAULT_FONT_SIZE = 32
+DEFAULT_FONT_SIZE = 60
 LIMIT_TEMPORAL_IMAGES = 20
 TEMPORAL_IMAGE_FOLDER = f'{settings.MEDIA_ROOT}/temporal'
 
@@ -15,20 +15,26 @@ def cheack_temporal_folder():
             remove(path.abspath(f'{TEMPORAL_IMAGE_FOLDER}/{img}'))
     
 def get_font(font=None):
-    if font is None:
-        font = 'RethinkSans-ExtraBold.ttf'
-    font_location = f'{settings.BASE_DIR}/assets/fonts/{font}'
+    if font == 'funny':
+        ttf_font ='SeymourOne-Regular.ttf'
+    else:
+        ttf_font = 'bungeespice.ttf'
+    
+    font_location = f'{settings.BASE_DIR}/static/cats/fonts/{ttf_font}'
     return ImageFont.truetype(font_location, DEFAULT_FONT_SIZE)
 
 def get_locations(image_selected):
 
-    name, _ = str(image_selected).split('/')
+    _, filename = str(image_selected).split('/')
+    name, _  = filename.split('.')
     uuid = randint(1, 9999)
 
-    new_location = f'{TEMPORAL_IMAGE_FOLDER}/{name}{uuid}.webp'
+    print(name)
+    new_name = f'{name}{uuid}.webp'
+    new_location = f'{TEMPORAL_IMAGE_FOLDER}/{new_name}'
     current_location = f'{settings.MEDIA_ROOT}/{image_selected}'
 
-    return (current_location, new_location)
+    return (current_location, new_location, new_name)
 
 def get_centred_position(size_tuple):
     image_width, image_height = size_tuple
@@ -37,17 +43,17 @@ def get_centred_position(size_tuple):
     return (x, y)
 
 
-def put_text_on_image(image_selected, text, selected_font=None):
+def put_text_on_image(image_selected, text, font=None):
     cheack_temporal_folder()
 
-    name, new_name = get_locations(image_selected)
+    location, new_location, new_name = get_locations(image_selected)
         
-    img = Image.open(name)
-    font = get_font(selected_font)
+    img = Image.open(location)
+    selected_font = get_font(font)
     draw = ImageDraw.Draw(img)
     
-    draw.text((get_centred_position(img.size)), text, anchor="mm" ,fill=(255,255,255), font=font)
+    draw.text((get_centred_position(img.size)), text, anchor="mm" ,fill=(255,255,255), font=selected_font)
 
-    img.save(new_name)
+    img.save(new_location)
     return new_name
     
